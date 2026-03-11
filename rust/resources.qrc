@@ -1,0 +1,10 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/qt/qml/JarvisUI">
+        <file>qml/Main.qml</file>
+        <file>qml/ChatView.qml</file>
+        <file>qml/MessageBubble.qml</file>
+        <file>qml/InputBar.qml</file>
+        <file>qml/StatusIndicator.qml</file>
+    </qresource>
+</RCC>
