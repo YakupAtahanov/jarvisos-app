@@ -25,7 +25,10 @@ class Jarvis:
 
     def __init__(self):
         # -- TODO 2: instantiate IPCServer -----------------------------------------
-        self.ipc = IPCServer(on_text_message=self.handle_text_input)
+        self.ipc = IPCServer(
+            on_text_message=self.handle_text_input,
+            on_stop_stream=self.handle_stop_stream,
+        )
 
         # ... your existing __init__ code ...
 
@@ -70,7 +73,20 @@ class Jarvis:
         finally:
             await self.ipc.set_state("idle")
 
-    # -- TODO 6: broadcast state changes from your existing voice loop -------------
+    # -- TODO 6: handle stop_stream from widget keybind (SUPER+X) -----------------
+    async def handle_stop_stream(self) -> None:
+        """
+        Called when a UI client sends stop_stream (e.g. widget SUPER+X).
+        Cancel the current LLM streaming task and stop TTS playback.
+        """
+        logger.info("IPC stop_stream requested")
+        # Cancel your active LLM task, e.g.:
+        #   if self._llm_task and not self._llm_task.done():
+        #       self._llm_task.cancel()
+        # Stop TTS playback, e.g.:
+        #   self.tts.stop()
+
+    # -- TODO 7: broadcast state changes from your existing voice loop -------------
     #
     #   On wake-word detection:
     #       await self.ipc.send_wake_word_detected()

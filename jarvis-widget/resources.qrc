@@ -1,0 +1,8 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/qt/qml/JarvisWidget">
+        <file>qml/Widget.qml</file>
+        <file>qml/ResponseView.qml</file>
+        <file>qml/InputBar.qml</file>
+    </qresource>
+</RCC>
