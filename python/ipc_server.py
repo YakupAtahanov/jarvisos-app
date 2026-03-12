@@ -8,6 +8,7 @@ Client -> Daemon:
   {"type": "message", "content": "turn off wifi"}
   {"type": "start_listening"}
   {"type": "stop_listening"}
+  {"type": "stop_stream"}
   {"type": "ping"}
 
 Daemon -> All Clients:
@@ -46,13 +47,21 @@ class IPCServer:
         await ipc.send_response_chunk("", done=True)
     """
 
-    def __init__(self, on_text_message: Optional[Callable] = None):
+    def __init__(
+        self,
+        on_text_message: Optional[Callable] = None,
+        on_stop_stream: Optional[Callable] = None,
+    ):
         """
         Args:
             on_text_message: async callback(content: str) invoked when a
                              client sends {"type": "message", "content": "..."}.
+            on_stop_stream:  async callback() invoked when a client sends
+                             {"type": "stop_stream"}. Should cancel the current
+                             LLM response and stop TTS playback.
         """
         self._on_text_message = on_text_message
+        self._on_stop_stream = on_stop_stream
         self._server: Optional[asyncio.AbstractServer] = None
         self._clients: Set[asyncio.StreamWriter] = set()
         self._current_state = "idle"
@@ -169,6 +178,13 @@ class IPCServer:
             await self.set_state("listening")
 
         elif msg_type == "stop_listening":
+            await self.set_state("idle")
+
+        elif msg_type == "stop_stream":
+            if self._on_stop_stream:
+                await self._on_stop_stream()
+            # Finalize the response stream for all clients
+            await self.send_response_chunk("", done=True)
             await self.set_state("idle")
 
         elif msg_type == "ping":

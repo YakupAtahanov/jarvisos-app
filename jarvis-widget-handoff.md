@@ -1402,7 +1402,6 @@ Rectangle {
 ```python
 """
 JARVIS Session Manager
-======================
 Persists chat sessions to ~/.local/share/jarvis/sessions/
 Each session is a JSON file: {id}.json
 

@@ -1,0 +1,32 @@
+# Rust
+rust/target/
+**/*.rs.bk
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.venv/
+venv/
+
+# Qt / CMake build artifacts
+rust/build/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Unix socket
+/tmp/jarvis.sock
